@@ -21,6 +21,8 @@ import com.empresa.clinicaodontologica.excecao.RecursoNaoEncontradoExcecao;
 import com.empresa.clinicaodontologica.excecao.RequisicaoIncorretaExcecao;
 import com.empresa.clinicaodontologica.servico.implementacao.PacienteServicoImplementacao;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/paciente")
 public class PacienteControlador {   
@@ -70,6 +72,7 @@ public class PacienteControlador {
     //     return ResponseEntity.ok().body(pacienteEntidade);
     // }  
 
+    @Operation(summary = "Registrar uma novo paciente.")
     @PostMapping("/salvar")
     public ResponseEntity<PacienteRespostaDto> salvar(@RequestBody PacienteRequisicaoDto paciente) throws RequisicaoIncorretaExcecao {
         try {
@@ -80,6 +83,7 @@ public class PacienteControlador {
         }      
     }
 
+    @Operation(summary = "Buscar todos os pacientes.")
     @GetMapping("/buscar_tudo")
     public ResponseEntity<List<PacienteRespostaDto>> buscarTudo() {
         List<PacienteRespostaDto> listaPacientes = new ArrayList<PacienteRespostaDto>();
@@ -90,6 +94,7 @@ public class PacienteControlador {
         return ResponseEntity.ok().body(listaPacientes);
     }
 
+    @Operation(summary = "Buscar um paciente.")
     @GetMapping("/buscar/{id}")
     public ResponseEntity<PacienteRespostaDto> buscarPorId(@PathVariable Integer id) throws RequisicaoIncorretaExcecao, RecursoNaoEncontradoExcecao {
         if (id != null) {
@@ -105,6 +110,7 @@ public class PacienteControlador {
         throw new RequisicaoIncorretaExcecao("Tabela Paciente: não é possível buscar um registro com ID nulo.");
     }
 
+    @Operation(summary = "Atualizar um paciente.")
     @PutMapping("/atualizar")
     public ResponseEntity<PacienteRespostaDto> atualizar(@RequestBody PacienteRequisicaoDto paciente) throws RequisicaoIncorretaExcecao, RecursoNaoEncontradoExcecao {
         PacienteEntidade pacienteEntidade = pacienteServico.atualizar(paciente.converterParaPacienteEntidade());
@@ -118,6 +124,7 @@ public class PacienteControlador {
         return ResponseEntity.ok().body(PacienteRespostaDto.converterParaPacienteRespostaDto(pacienteEntidade));
     }  
 
+    @Operation(summary = "Excluir um paciente.")
     @DeleteMapping("/excluir/{id}") 
     public ResponseEntity<String> excluir(@PathVariable Integer id) throws RecursoNaoEncontradoExcecao {
         if (pacienteServico.excluir(id)) {

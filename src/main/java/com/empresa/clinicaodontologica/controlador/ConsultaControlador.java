@@ -27,6 +27,8 @@ import com.empresa.clinicaodontologica.servico.implementacao.ConsultaServicoImpl
 import com.empresa.clinicaodontologica.servico.implementacao.DentistaServicoImplementacao;
 import com.empresa.clinicaodontologica.servico.implementacao.PacienteServicoImplementacao;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/consulta")
 public class ConsultaControlador {   
@@ -81,6 +83,7 @@ public class ConsultaControlador {
     //     return ResponseEntity.ok().body(consultaEntidade);
     // }  
 
+    @Operation(summary = "Registrar uma nova consulta.")
     @PostMapping("/salvar")
     public ResponseEntity<ConsultaRespostaDto> salvar(@RequestBody ConsultaRequisicaoDto consulta) throws RecursoNaoEncontradoExcecao, RequisicaoIncorretaExcecao {
         ConsultaEntidade consultaEntidade = null;
@@ -100,6 +103,7 @@ public class ConsultaControlador {
         throw new RequisicaoIncorretaExcecao("Tabela Consulta: a requisição para inserir um novo registro está incorreta.");    
     }
 
+    @Operation(summary = "Buscar todas as consultas.")
     @GetMapping("/buscar_tudo")
     public ResponseEntity<List<ConsultaRespostaDto>> buscarTudo() {
         List<ConsultaRespostaDto> listaConsultas = new ArrayList<ConsultaRespostaDto>();
@@ -110,6 +114,7 @@ public class ConsultaControlador {
         return ResponseEntity.ok().body(listaConsultas);
     }
 
+    @Operation(summary = "Buscar uma consulta.")
     @GetMapping("/buscar/{id}")
     public ResponseEntity<ConsultaRespostaDto> buscarPorId(@PathVariable Integer id) throws RequisicaoIncorretaExcecao, RecursoNaoEncontradoExcecao {
         if (id != null) {
@@ -125,6 +130,7 @@ public class ConsultaControlador {
         throw new RequisicaoIncorretaExcecao("Tabela Consulta: não é possível buscar um registro com ID nulo.");
     }
 
+    @Operation(summary = "Buscar todas as consultas de um paciente.")
     @GetMapping("/buscar_por_paciente/")
     public ResponseEntity<List<ConsultaRespostaDto>> buscarTodasConsultasDoPaciente(@RequestParam String nome) {
         List<ConsultaRespostaDto> listaConsultas = new ArrayList<ConsultaRespostaDto>();
@@ -135,6 +141,7 @@ public class ConsultaControlador {
         return ResponseEntity.ok().body(listaConsultas);
     }
 
+    @Operation(summary = "Buscar todas as consultas executas por um dentista.")
     @GetMapping("/buscar_por_dentista/")
     public ResponseEntity<List<ConsultaRespostaDto>> buscarTodasConsultasExecutasPeloDentista(@RequestParam String nome) {
         List<ConsultaRespostaDto> listaConsultas = new ArrayList<ConsultaRespostaDto>();
@@ -145,6 +152,7 @@ public class ConsultaControlador {
         return ResponseEntity.ok().body(listaConsultas);
     }
 
+    @Operation(summary = "Buscar todas as consultas marcadas numa determinada data.")
     @GetMapping("/buscar_por_data/{dia}/{mes}/{ano}")
     public ResponseEntity<List<ConsultaRespostaDto>> buscarTodasConsultasPorData(@PathVariable Integer dia, @PathVariable Integer mes, @PathVariable Integer ano) {
         List<ConsultaRespostaDto> listaConsultas = new ArrayList<ConsultaRespostaDto>();
@@ -155,6 +163,7 @@ public class ConsultaControlador {
         return ResponseEntity.ok().body(listaConsultas);
     } 
 
+    @Operation(summary = "Atualizar uma consulta.")
     @PutMapping("/atualizar")
     public ResponseEntity<ConsultaRespostaDto> atualizar(@RequestBody ConsultaRequisicaoDto consulta) throws RequisicaoIncorretaExcecao, RecursoNaoEncontradoExcecao {
         ConsultaEntidade consultaEntidade = consultaServico.atualizar(consulta.converterParaConsultaEntidade());
@@ -168,6 +177,7 @@ public class ConsultaControlador {
         return ResponseEntity.ok().body(ConsultaRespostaDto.converterParaConsultaRespostaDto(consultaEntidade));
     }   
 
+    @Operation(summary = "Excluir uma consulta.")
     @DeleteMapping("/excluir/{id}") 
     public ResponseEntity<String> excluir(@PathVariable Integer id) throws RecursoNaoEncontradoExcecao {
         if (consultaServico.excluir(id)) {
